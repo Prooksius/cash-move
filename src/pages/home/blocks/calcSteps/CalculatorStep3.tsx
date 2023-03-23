@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { AppDispatch, RootState } from '@store/store'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+	listTraslations,
 	setAgreement,
 	setCalcStep,
 	setEmail,
@@ -18,9 +19,12 @@ import validator from 'validator'
 import gsap from 'gsap'
 import { RoundUpIcon } from '@components/icons/RoundUpIcon'
 import { CheckIcon } from '@components/icons/CheckIcon'
+import { axiosInstance } from '@store/axiosInstance'
 
 const CalculatorStep3 = () => {
 	const dispatch = useDispatch<AppDispatch>()
+
+	const translations = useSelector(listTraslations)
 
 	const stepTL = gsap.timeline()
 	const stepBackTL = gsap.timeline()
@@ -33,10 +37,47 @@ const CalculatorStep3 = () => {
 	const phone = useSelector((state: RootState) => state.globals.phone)
 	const [phoneError, setPhoneError] = useState<boolean>(false)
 
+	const value_you_give = useSelector(
+		(state: RootState) => state.globals.finalGiveSum
+	)
+	const give_in_cash = useSelector(
+		(state: RootState) => state.globals.giveInCash
+	)
+	const you_give_in_currency = useSelector(
+		(state: RootState) => state.globals.giveCurrency.code
+	)
+	const type_give_payment1 = useSelector(
+		(state: RootState) => state.globals.giveBankTransferType
+	)
+	const type_give_payment2 = useSelector(
+		(state: RootState) => state.globals.giveCashTransferType
+	)
+	const give_country = useSelector(
+		(state: RootState) => state.globals.giveCountry?.name
+	)
+	const give_city = useSelector(
+		(state: RootState) => state.globals.cashGiveCity
+	)
+	const value_you_get = useSelector((state: RootState) => state.globals.getSum)
+	const you_get_in_currency = useSelector(
+		(state: RootState) => state.globals.getCurrency.code
+	)
+	const get_in_cash = useSelector((state: RootState) => state.globals.getInCash)
+	const type_get_payment1 = useSelector(
+		(state: RootState) => state.globals.getBankTransferType
+	)
+	const type_get_payment2 = useSelector(
+		(state: RootState) => state.globals.getCashTransferType
+	)
+	const get_country = useSelector(
+		(state: RootState) => state.globals.getCountry?.name
+	)
+	const get_city = useSelector((state: RootState) => state.globals.cashGetCity)
+
 	const [status, setStatus] = useState<string>('idle')
 	const [validateAll, setValidateAll] = useState<boolean>(false)
 
-	const handleBottomButton = () => {
+	const handleBottomButton = async () => {
 		if (
 			!phone ||
 			!name ||
@@ -48,11 +89,42 @@ const CalculatorStep3 = () => {
 			return false
 		}
 		setStatus('process')
-		setTimeout(() => {
+
+		const bodyData = new FormData()
+		bodyData.append('request_type', 'movemoney')
+		bodyData.append('name', name)
+		bodyData.append('email', email)
+		bodyData.append('phone', phone)
+		bodyData.append('value_you_give', value_you_give.toString())
+		bodyData.append('give_in_cash', give_in_cash ? 'Да' : 'Нет')
+		bodyData.append('you_give_in_currency', you_give_in_currency)
+		bodyData.append(
+			'type_give_payment',
+			give_in_cash ? type_give_payment2 : type_give_payment1
+		)
+		bodyData.append('give_country', give_country ? give_country : '')
+		bodyData.append('give_city', give_city)
+		bodyData.append('value_you_get', value_you_get)
+		bodyData.append('you_get_in_currency', you_get_in_currency)
+		bodyData.append('get_in_cash', get_in_cash ? 'Да' : 'Нет')
+		bodyData.append(
+			'type_get_payment',
+			get_in_cash ? type_get_payment2 : type_get_payment1
+		)
+		bodyData.append('get_country', get_country ? get_country : '')
+		bodyData.append('get_city', get_city)
+
+		try {
+			const response = await axiosInstance.post('/callback.php', bodyData)
+			console.log('edit provider response.data', response.data)
 			setStatus('success')
-			setTimeout(() => {
-				toastAlert('Congrats! Your request has been sent', 'success')
-			}, 1000)
+			toastAlert('Congrats! Your request has been sent', 'success')
+		} catch (err) {
+			setStatus('idle')
+			toastAlert('Error sending request to the server', 'error')
+		}
+
+		setTimeout(() => {
 			processNextStep(0)
 		}, 800)
 	}
@@ -179,7 +251,7 @@ const CalculatorStep3 = () => {
 								strokeLinejoin="round"
 							/>
 						</svg>
-						<span>Complete request</span>
+						<span>{translations('CalcBlockCompleteRequest')}</span>
 					</h2>
 					<div className="calculator-step__content" style={{ opacity: 0 }}>
 						<div className="move_money__form_user">
@@ -190,7 +262,7 @@ const CalculatorStep3 = () => {
 									setError={(error) => setNameError(error ? true : false)}
 									required
 									min={2}
-									placeholder="Name"
+									placeholder={translations('FieldName')}
 									check={validateAll}
 								/>
 							</div>
@@ -200,7 +272,7 @@ const CalculatorStep3 = () => {
 									onChange={(value) => dispatch(setEmail(value))}
 									setError={(error) => setEmailError(error ? true : false)}
 									required
-									placeholder="Email"
+									placeholder={translations('FieldEmail')}
 									check={validateAll}
 								/>
 								<PhoneField
@@ -208,7 +280,7 @@ const CalculatorStep3 = () => {
 									onChange={(value) => dispatch(setPhone(value))}
 									setError={(error) => setPhoneError(error ? true : false)}
 									required
-									placeholder="Phone"
+									placeholder={translations('FieldPhone')}
 									check={validateAll}
 								/>
 							</div>
@@ -225,7 +297,7 @@ const CalculatorStep3 = () => {
 										className="form-check-label"
 										htmlFor="move_money__agreement"
 									>
-										Terms and agreement
+										{translations('CalcBlockTerms')}
 									</label>
 								</div>
 							</div>
@@ -244,7 +316,7 @@ const CalculatorStep3 = () => {
 								className="btn btn-blue btn-large btn-large btn-fullwidth"
 								onClick={() => handleBottomButton()}
 							>
-								<span>Confirm</span>
+								<span>{translations('CalcBlockConfirm')}</span>
 								{status === 'idle' && <ArrowIcon color="#fff" />}
 								{status === 'process' && <RoundUpIcon color="#fff" />}
 								{status === 'success' && <CheckIcon color="#fff" />}

@@ -8,12 +8,22 @@ import { ChatIcon } from '@components/icons/ChatIcon'
 import FaqAccordion from './FaqAccordion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useDispatch, useSelector } from 'react-redux'
+import { listLang, listTraslations, setLang } from '@store/slices/globalsSlice'
+import { AppDispatch } from '@store/store'
 
 if (typeof window !== `undefined`) {
 	gsap.registerPlugin(ScrollTrigger)
 }
 
 const FooterBlock = () => {
+	const dispatch = useDispatch<AppDispatch>()
+	const lang = useSelector(listLang)
+	const translations = useSelector(listTraslations)
+
+	const handleLangSet = (lang: string) => {
+		dispatch(setLang(lang))
+	}
 	useEffect(() => {
 		ScrollTrigger.matchMedia({
 			'(min-width: 768px)': () => {
@@ -55,15 +65,17 @@ const FooterBlock = () => {
 								color={'var(--link-color)'}
 							/>
 						</div>
-						<div className="support__time">24/7 Support</div>
+						<div className="support__time">
+							24/7 {translations('FooterSupport')}
+						</div>
 						<div className="support__links">
 							<a href="#" className="support__link">
 								<EarPhonesIcon />
-								Call us
+								{translations('FooterCallUs')}
 							</a>
 							<a href="#" className="support__link">
 								<ChatIcon />
-								Chat with us
+								{translations('FooterChatWithUs')}
 							</a>
 						</div>
 					</div>
@@ -76,19 +88,19 @@ const FooterBlock = () => {
 					<nav className="footer__nav">
 						<ul>
 							<li>
-								<a href="#">About us</a>
+								<a href="#">{translations('FooterAboutUs')}</a>
 							</li>
 							<li>
-								<a href="#">Help</a>
+								<a href="#">{translations('FooterHelp')}</a>
 							</li>
 							<li>
-								<a href="#">Legal</a>
+								<a href="#">{translations('FooterLegal')}</a>
 							</li>
 						</ul>
 					</nav>
 					<div className="footer__button">
 						<button className="btn btn-blue" type="button">
-							For exchanger
+							{translations('FooterForExchanger')}
 						</button>
 					</div>
 				</div>
@@ -108,8 +120,26 @@ const FooterBlock = () => {
 						</a>
 					</div>
 					<div className="footer__language language">
-						<span>English</span>
-						<span className="flag flag-gb"></span>
+						{lang === 'ru' && (
+							<button
+								type="button"
+								className="btn btn-white"
+								onClick={() => handleLangSet('en')}
+							>
+								<span>English</span>
+								<span className="flag flag-gb"></span>
+							</button>
+						)}
+						{lang === 'en' && (
+							<button
+								type="button"
+								className="btn btn-white"
+								onClick={() => handleLangSet('ru')}
+							>
+								<span>Русский</span>
+								<span className="flag flag-ru"></span>
+							</button>
+						)}
 					</div>
 				</div>
 			</div>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { AppDispatch, RootState } from '@store/store'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+	listTraslations,
 	setCalcStep,
 	setGetSum,
 	setTransferDuration,
@@ -28,6 +29,8 @@ const ctLabels: TCashTransferLabels = {
 
 const CalculatorStep2 = () => {
 	const dispatch = useDispatch<AppDispatch>()
+
+	const translations = useSelector(listTraslations)
 
 	const stepTL = gsap.timeline()
 	const stepBackTL = gsap.timeline()
@@ -74,10 +77,11 @@ const CalculatorStep2 = () => {
 		(state: RootState) => state.globals.cashGetCity
 	)
 
-	let giveLabel = 'You give '
+	let giveLabel = translations('CalcBlockYouGive') + ' '
 	if (giveCountry) {
 		giveLabel +=
-			'in ' +
+			translations('CalcBlockToIn') +
+			' ' +
 			giveCountry.name +
 			(cashGiveCity ? ', ' + cashGiveCity : '') +
 			', ' +
@@ -86,10 +90,11 @@ const CalculatorStep2 = () => {
 		giveLabel += btLabels[giveBankTransferType]
 	}
 
-	let getLabel = 'You get '
+	let getLabel = translations('CalcBlockYouGet') + ' '
 	if (getCountry) {
 		getLabel +=
-			'in ' +
+			translations('CalcBlockToIn') +
+			' ' +
 			getCountry.name +
 			(cashGetCity ? ', ' + cashGetCity : '') +
 			', ' +
@@ -245,7 +250,7 @@ const CalculatorStep2 = () => {
 								strokeLinejoin="round"
 							/>
 						</svg>
-						<span>Complete request</span>
+						<span>{translations('CalcBlockCompleteRequest')}</span>
 					</h2>
 					<div className="calculator-step__content" style={{ opacity: 0 }}>
 						<div className="calculator-row">
@@ -270,7 +275,7 @@ const CalculatorStep2 = () => {
 											className="form-check-label"
 											htmlFor="move_money__terms_1"
 										>
-											Immediately
+											{translations('CalcBlockImmediately')}
 										</label>
 									</div>
 									<div className="form-check">
@@ -286,7 +291,7 @@ const CalculatorStep2 = () => {
 											className="form-check-label"
 											htmlFor="move_money__terms_2"
 										>
-											During week (-10% discount)
+											{translations('CalcBlockWeek')}
 										</label>
 									</div>
 								</div>
@@ -301,7 +306,9 @@ const CalculatorStep2 = () => {
 										{getSum} {getCurrency.code}
 									</div>
 								</div>
-								<div className="move_money__label">Service fee</div>
+								<div className="move_money__label">
+									{translations('CalcBlockServiceFee')}
+								</div>
 								<div className="move_money__type_service">2%</div>
 							</div>
 						</div>
@@ -322,7 +329,7 @@ const CalculatorStep2 = () => {
 								className="btn btn-blue btn-large btn-large btn-fullwidth"
 								onClick={() => handleBottomButton()}
 							>
-								<span>Next</span>
+								<span>{translations('CalcBlockNext')}</span>
 								<ArrowIcon color="#fff" />
 							</button>
 						</div>

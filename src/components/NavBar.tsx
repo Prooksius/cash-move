@@ -3,26 +3,28 @@ import gsap from 'gsap'
 import classNames from 'classNames'
 import { useSelector } from 'react-redux'
 import { RootState } from '@store/index'
+import { listTraslations } from '@store/slices/globalsSlice'
 
 const links = [
 	{
 		id: 0,
-		title: 'How it works',
+		title: 'TopMenuHowItWorks',
 		href: 'section_how_it_works',
 	},
 	{
 		id: 1,
-		title: 'Reviews',
+		title: 'TopMenuReviews',
 		href: 'section_reviews',
 	},
 	{
 		id: 2,
-		title: 'FAQ',
+		title: 'TopMenuFAQ',
 		href: 'footer',
 	},
 ]
 
 const NavBar = () => {
+	const translations = useSelector(listTraslations)
 	const step = useSelector((state: RootState) => state.globals.calcStep)
 
 	const handleNav = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -51,7 +53,7 @@ const NavBar = () => {
 					key={item.id}
 					onClick={(e) => handleNav(e, item.href)}
 				>
-					{item.title}
+					{translations(item.title)}
 				</a>
 			))}
 		</div>

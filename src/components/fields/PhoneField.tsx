@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import classNames from 'classNames'
-import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
+import PhoneInput, {
+	Country,
+	isValidPhoneNumber,
+} from 'react-phone-number-input'
+import { translations } from '@store/translations'
+import { listLang, listTraslations } from '@store/slices/globalsSlice'
+import { useSelector } from 'react-redux'
 
 interface PhoneFieldProps {
 	value: string
@@ -19,15 +25,17 @@ const PhoneField: React.FC<PhoneFieldProps> = ({
 	placeholder = '',
 	check,
 }) => {
+	const translations = useSelector(listTraslations)
+	const lang = useSelector(listLang)
 	const [nameError, setNameError] = useState<string | null>(null)
 
 	const handlePhone = (phone: string) => {
 		onChange(phone ? phone : '')
 		if (required && !phone) {
-			return sendError('Phone required')
+			return sendError(translations('FieldErrorPhoneRequired'))
 		}
 		if (!isValidPhoneNumber(phone)) {
-			return sendError('Invalid phone number')
+			return sendError(translations('FieldErrorPhoneError'))
 		}
 		return sendError('')
 	}
@@ -53,7 +61,7 @@ const PhoneField: React.FC<PhoneFieldProps> = ({
 			<PhoneInput
 				placeholder={placeholder}
 				international
-				defaultCountry="RU"
+				defaultCountry={lang.toUpperCase() as Country}
 				value={value}
 				onChange={handlePhone}
 			/>

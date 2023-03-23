@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import validator from 'validator'
 import classNames from 'classNames'
+import { useSelector } from 'react-redux'
+import { listTraslations } from '@store/slices/globalsSlice'
 
 interface EmailFieldProps {
 	value: string
@@ -19,15 +21,17 @@ const EmailField: React.FC<EmailFieldProps> = ({
 	placeholder = '',
 	check,
 }) => {
+	const translations = useSelector(listTraslations)
+
 	const [nameError, setNameError] = useState<string | null>(null)
 
 	const handleValue = (email: string) => {
 		onChange(email)
 		if (required && !email) {
-			return sendError('Email required')
+			return sendError(translations('FieldErrorEmailRequired'))
 		}
 		if (!validator.isEmail(email)) {
-			return sendError('Email invalid')
+			return sendError(translations('FieldErrorEmailError'))
 		}
 		return sendError('')
 	}

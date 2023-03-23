@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '@store/index'
+import { translations, TTranslations } from '@store/translations'
 
 export interface TCountry {
 	code: string
@@ -50,6 +51,8 @@ interface GlobalState {
 	calcStep: number
 	signUpOpened: boolean
 	tooltipMounted: boolean
+	translations: TTranslations
+	lang: string
 }
 
 const countriesList: TCountry[] = [
@@ -106,6 +109,8 @@ const initialState: GlobalState = {
 	finalGiveSum: 0,
 	signUpOpened: false,
 	tooltipMounted: false,
+	translations,
+	lang: localStorage.getItem('lang') || 'en',
 }
 
 export const globalsSlice = createSlice({
@@ -215,6 +220,10 @@ export const globalsSlice = createSlice({
 		setTooltipMounted: (state, { payload }: PayloadAction<boolean>) => {
 			state.tooltipMounted = payload
 		},
+		setLang: (state, { payload }: PayloadAction<string>) => {
+			state.lang = payload
+			localStorage.setItem('lang', payload)
+		},
 	},
 })
 
@@ -245,6 +254,7 @@ export const {
 	setAgreement,
 	setSignUpOpened,
 	setTooltipMounted,
+	setLang,
 } = globalsSlice.actions
 
 export default globalsSlice.reducer
@@ -255,3 +265,8 @@ export const selectCountryByCode = (state: RootState) => (code: string) => {
 export const selectCurrencyByCode = (state: RootState) => (code: string) => {
 	return state.globals.currencies.find((currency) => currency.code === code)
 }
+export const listLang = (state: RootState) => state.globals.lang
+export const listTraslations = (state: RootState) => (phrase: string) =>
+	state.globals.translations[phrase]
+		? state.globals.translations[phrase][state.globals.lang]
+		: phrase

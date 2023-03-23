@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import classNames from 'classNames'
+import { useSelector } from 'react-redux'
+import { listTraslations } from '@store/slices/globalsSlice'
 
 interface TextFieldProps {
 	value: string
@@ -22,18 +24,19 @@ const TextField: React.FC<TextFieldProps> = ({
 	placeholder = '',
 	check,
 }) => {
+	const translations = useSelector(listTraslations)
 	const [nameError, setNameError] = useState<string | null>(null)
 
 	const handleName = (name: string) => {
 		onChange(name)
 		if (required && !name) {
-			return sendError('Field required')
+			return sendError(translations('FieldErrorRequired'))
 		}
 		if (name.length < min) {
-			return sendError('Field too short')
+			return sendError(translations('FieldErrorTooShort'))
 		}
 		if (name.length > max) {
-			return sendError('Field too long')
+			return sendError(translations('FieldErrorTooLong'))
 		}
 		return sendError('')
 	}

@@ -209,7 +209,7 @@ body.noscroll-sure header {
 	margin-bottom: 100px;
 }
 .first-block__header {
-	max-width: 475px;
+	max-width: 485px;
 	z-index: 12;
 }
 .first-block__header h1 {
@@ -713,7 +713,7 @@ h2 {
 }
 
 .how_it_works__card {
-	max-width: 570px;
+	max-width: 585px;
 	background-color: white;
 	border-radius: 12px;
 	overflow: hidden;

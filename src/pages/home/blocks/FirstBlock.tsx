@@ -1,4 +1,5 @@
 import MainCircles from '@components/MainCircles'
+import { listTraslations } from '@store/slices/globalsSlice'
 import { AppDispatch, RootState } from '@store/store'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,6 +10,7 @@ import CalculatorBlock from './CalculatorBlock'
 
 const FirstBlock = () => {
 	const step = useSelector((state: RootState) => state.globals.calcStep)
+	const translations = useSelector(listTraslations)
 
 	useEffect(() => {
 		if (step > 0) {
@@ -33,13 +35,12 @@ const FirstBlock = () => {
 					<div className="container">
 						<div className="first-block__area">
 							<div className="first-block__header">
-								<h1>
-									Move <span>money</span> without borders
-								</h1>
-								<p>
-									Safe and insured movement of funds between countries by crypto
-									without a risk
-								</p>
+								<h1
+									dangerouslySetInnerHTML={{
+										__html: translations('FirstBlockTitle'),
+									}}
+								></h1>
+								<p>{translations('FirstBlockText')}</p>
 							</div>
 							<div className="first-block__animation">
 								<MainCircles />

@@ -15,6 +15,7 @@ import {
 	setTooltipMounted,
 	TCountry,
 	TCurrency,
+	listTraslations,
 } from '@store/slices/globalsSlice'
 import { AppDispatch, RootState } from '@store/store'
 import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react'
@@ -42,6 +43,8 @@ const cryptoIcons: Record<string, string> = {
 
 const CalculatorBlock = () => {
 	const dispatch = useDispatch<AppDispatch>()
+
+	const translations = useSelector(listTraslations)
 
 	const [countrySearch, setCountrySearch] = useState<string>('')
 	const [currencySearch, setCurrencySearch] = useState<string>('')
@@ -132,7 +135,7 @@ const CalculatorBlock = () => {
 
 	const handleBottomButton = () => {
 		if (!giveSum && !getSum) {
-			setGiveInputError('Enter a sum')
+			setGiveInputError(translations('CalcBlockEnterASum'))
 			setGiveInputValid(false)
 			return false
 		}
@@ -485,7 +488,7 @@ const CalculatorBlock = () => {
 						<div className="move-money-sum__block give-block">
 							<div className="label-checkbox">
 								<label htmlFor="giveSumRef" className="move_money__label">
-									You give
+									{translations('CalcBlockYouGive')}
 								</label>
 								<div className="form-check">
 									<input
@@ -495,7 +498,9 @@ const CalculatorBlock = () => {
 										checked={giveCountrySelected !== null || giveCountriesOpen}
 										onChange={() => toggleCountriesOpen('give')}
 									/>
-									<label htmlFor="giveCountrySelected">Give in cash</label>
+									<label htmlFor="giveCountrySelected">
+										{translations('CalcBlockGiveInCash')}
+									</label>
 								</div>
 							</div>
 							<div
@@ -546,7 +551,7 @@ const CalculatorBlock = () => {
 						<div className="move-money-sum__block get-block">
 							<div className="label-checkbox">
 								<label htmlFor="getSumRef" className="move_money__label">
-									You get
+									{translations('CalcBlockYouGet')}
 								</label>
 								<div className="form-check">
 									<input
@@ -556,7 +561,9 @@ const CalculatorBlock = () => {
 										checked={getCountrySelected !== null || getCountriesOpen}
 										onChange={() => toggleCountriesOpen('get')}
 									/>
-									<label htmlFor="getCountrySelected">Get in cash</label>
+									<label htmlFor="getCountrySelected">
+										{translations('CalcBlockGetInCash')}
+									</label>
 								</div>
 							</div>
 							<div
@@ -609,7 +616,7 @@ const CalculatorBlock = () => {
 								className="btn btn-blue btn-large btn-fullwidth"
 								onClick={() => handleBottomButton()}
 							>
-								<span>Move</span>
+								<span>{translations('CalcBlockMove')}</span>
 								<ArrowIcon color="#fff" />
 							</button>
 						</div>
@@ -621,7 +628,7 @@ const CalculatorBlock = () => {
 					<div className="calculator-block__security">
 						<ProtectionBlock />
 						<div className="calculator-block__totals">
-							1032 exchangers in 89 countries
+							{translations('ProtectionSlogan')}
 						</div>
 					</div>
 				</div>
@@ -636,7 +643,7 @@ const CalculatorBlock = () => {
 					<div className="select__search">
 						<input
 							type="text"
-							placeholder="Your country"
+							placeholder={translations('CalcBlockYourCountry')}
 							value={countrySearch}
 							onChange={(e) => setCountrySearch(e.target.value)}
 						/>
@@ -667,7 +674,7 @@ const CalculatorBlock = () => {
 					<div className="select__search">
 						<input
 							type="text"
-							placeholder="Your country"
+							placeholder={translations('CalcBlockYourCountry')}
 							value={countrySearch}
 							onChange={(e) => setCountrySearch(e.target.value)}
 						/>
@@ -698,14 +705,14 @@ const CalculatorBlock = () => {
 					<div className="select__search">
 						<input
 							type="text"
-							placeholder="Your currency"
+							placeholder={translations('CalcBlockYourCurrency')}
 							value={currencySearch}
 							onChange={(e) => setCurrencySearch(e.target.value)}
 						/>
 					</div>
 					<div className="select__options">
 						<div className="select__separator">
-							<span>Cryptocurrencies</span>
+							<span>{translations('CalcBlockCryptoCurrencies')}</span>
 						</div>
 						{currencies
 							.filter((item) => item.type === 'crypto')
@@ -722,7 +729,7 @@ const CalculatorBlock = () => {
 								</div>
 							))}
 						<div className="select__separator">
-							<span>Fiat Money</span>
+							<span>{translations('CalcBlockFiatCurrencies')}</span>
 						</div>
 						{currencies
 							.filter((item) => item.type === 'fiat')
@@ -753,14 +760,14 @@ const CalculatorBlock = () => {
 					<div className="select__search">
 						<input
 							type="text"
-							placeholder="Your currency"
+							placeholder={translations('CalcBlockYourCurrency')}
 							value={currencySearch}
 							onChange={(e) => setCurrencySearch(e.target.value)}
 						/>
 					</div>
 					<div className="select__options">
 						<div className="select__separator">
-							<span>Cryptocurrencies</span>
+							<span>{translations('CalcBlockCryptoCurrencies')}</span>
 						</div>
 						{currencies
 							.filter((item) => item.type === 'crypto')
@@ -777,7 +784,7 @@ const CalculatorBlock = () => {
 								</div>
 							))}
 						<div className="select__separator">
-							<span>Fiat Money</span>
+							<span>{translations('CalcBlockFiatCurrencies')}</span>
 						</div>
 						{currencies
 							.filter((item) => item.type === 'fiat')

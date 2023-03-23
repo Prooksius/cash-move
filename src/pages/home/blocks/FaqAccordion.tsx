@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Collapse } from 'react-collapse'
 import classNames from 'classNames'
+import { listTraslations } from '@store/slices/globalsSlice'
+import { useSelector } from 'react-redux'
 
 export interface TAccordionItem {
 	id: number
@@ -69,6 +71,8 @@ const questions: TAccordionItem[] = [
 ]
 
 const FaqAccordion = () => {
+	const translations = useSelector(listTraslations)
+
 	const [items, setItems] = useState(questions)
 
 	const handleToggle = (id: number) => {
@@ -85,7 +89,7 @@ const FaqAccordion = () => {
 
 	return (
 		<div className="footer__faq">
-			<h2 className="faq__title">FAQ</h2>
+			<h2 className="faq__title">{translations('TopMenuFAQ')}</h2>
 			{items.map((item, index) => (
 				<div className="accordion-item" key={index}>
 					<div className="accordion-header">

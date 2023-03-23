@@ -6,9 +6,7 @@ import { NavLink } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import { LogoIcon } from '@components/icons/LogoIcon'
 import { RootState } from '@store/index'
-import {
-	setSignUpOpened,
-} from '@store/slices/globalsSlice'
+import { listTraslations, setSignUpOpened } from '@store/slices/globalsSlice'
 import Popuper, { PopupHeaderSlot } from '@components/Popuper'
 import SignUp from '@pages/popups/SignUp'
 
@@ -19,6 +17,7 @@ interface MainLayoutProps {
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children, title }) => {
 	const dispatch = useDispatch<AppDispatch>()
+	const translations = useSelector(listTraslations)
 	const signUpOpened = useSelector(
 		(state: RootState) => state.globals.signUpOpened
 	)
@@ -42,7 +41,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title }) => {
 									className="btn btn-white"
 									onClick={() => dispatch(setSignUpOpened(true))}
 								>
-									Sign up
+									{translations('HeaderSignUp')}
 								</button>
 							</div>
 						</div>
@@ -59,7 +58,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title }) => {
 				contentType={undefined}
 			>
 				<PopupHeaderSlot>
-					<h3>Sign up</h3>
+					<h3>{translations('SignUpPopupTitle')}</h3>
 				</PopupHeaderSlot>
 				<SignUp />
 			</Popuper>

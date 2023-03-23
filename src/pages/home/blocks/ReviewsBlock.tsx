@@ -1,9 +1,13 @@
 import React from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import Star from '@assets/img/star.svg'
-import Client from '@assets/img/client.jpg'
+import { allReviews } from '@store/translations'
+import { listLang } from '@store/slices/globalsSlice'
+import { useSelector } from 'react-redux'
 
 const ReviewsBlock = () => {
+	const lang = useSelector(listLang)
+
 	return (
 		<section id="section_reviews" className="reviews">
 			<div className="container">
@@ -35,66 +39,33 @@ const ReviewsBlock = () => {
 					//				onSlideChange={() => console.log('slide change')}
 					//				onSwiper={(swiper) => console.log(swiper)}
 				>
-					<SwiperSlide>
-						<div className="reviews__slide">
-							<img className="reviews__img" src={Client} alt="клиент" />
-							<div className="reviews__content">
-								<div className="reviews__rating">
-									<img src={Star} />
-									<img src={Star} />
-									<img src={Star} />
-									<img src={Star} />
-									<img src={Star} />
+					{allReviews.map((review, index) => (
+						<SwiperSlide key={index}>
+							<div className="reviews__slide">
+								<img
+									className="reviews__img"
+									src={review.avatar}
+									alt={review.name[lang]}
+								/>
+								<div className="reviews__content">
+									<div className="reviews__rating">
+										<img src={Star} />
+										<img src={Star} />
+										<img src={Star} />
+										<img src={Star} />
+										<img src={Star} />
+									</div>
+									<div
+										className="reviews__comment"
+										style={{ fontSize: review.font }}
+									>
+										{review.text[lang]}
+									</div>
+									<div className="reviews__author">{review.name[lang]}</div>
 								</div>
-								<div className="reviews__comment">
-									You don’t worry about choosing the right and reliable
-									exchanger, the service hold your funds until you receive your
-									money
-								</div>
-								<div className="reviews__author">Nick Manilla</div>
 							</div>
-						</div>
-					</SwiperSlide>
-					<SwiperSlide>
-						<div className="reviews__slide">
-							<img className="reviews__img" src={Client} alt="клиент" />
-							<div className="reviews__content">
-								<div className="reviews__rating">
-									<img src={Star} />
-									<img src={Star} />
-									<img src={Star} />
-									<img src={Star} />
-									<img src={Star} />
-								</div>
-								<div className="reviews__comment">
-									You don’t worry about choosing the right and reliable
-									exchanger, the service hold your funds until you receive your
-									money
-								</div>
-								<div className="reviews__author">Nick Manilla</div>
-							</div>
-						</div>
-					</SwiperSlide>
-					<SwiperSlide>
-						<div className="reviews__slide">
-							<img className="reviews__img" src={Client} alt="клиент" />
-							<div className="reviews__content">
-								<div className="reviews__rating">
-									<img src={Star} />
-									<img src={Star} />
-									<img src={Star} />
-									<img src={Star} />
-									<img src={Star} />
-								</div>
-								<div className="reviews__comment">
-									You don’t worry about choosing the right and reliable
-									exchanger, the service hold your funds until you receive your
-									money
-								</div>
-								<div className="reviews__author">Nick Manilla</div>
-							</div>
-						</div>
-					</SwiperSlide>
+						</SwiperSlide>
+					))}
 				</Swiper>
 			</div>
 		</section>

@@ -1,5 +1,11 @@
 import axios from 'axios'
 
+export const axiosInstance = axios.create({
+	baseURL: '',
+	headers: {
+		'Content-Type': 'multipart/form-data',
+	},
+})
 export const axiosApilayer = axios.create({
 	baseURL: 'https://api.apilayer.com/',
 	headers: {

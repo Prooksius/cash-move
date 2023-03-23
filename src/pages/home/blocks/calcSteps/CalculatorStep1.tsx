@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { AppDispatch, RootState } from '@store/store'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+	listTraslations,
 	setCalcStep,
 	setCashGetCity,
 	setCashGiveCity,
@@ -17,6 +18,8 @@ import gsap from 'gsap'
 
 const CalculatorStep1 = () => {
 	const dispatch = useDispatch<AppDispatch>()
+
+	const translations = useSelector(listTraslations)
 
 	const stepTL = gsap.timeline()
 	const stepBackTL = gsap.timeline()
@@ -189,13 +192,15 @@ const CalculatorStep1 = () => {
 								strokeLinejoin="round"
 							/>
 						</svg>
-						<span>Complete request</span>
+						<span>{translations('CalcBlockCompleteRequest')}</span>
 					</h2>
 					<div className="calculator-step__content" style={{ opacity: 0 }}>
 						<div className="calculator-row">
 							<div className="calculator__part calculator__part-left">
 								<div className="calculator__sum">
-									<label className="move_money__label">You give</label>
+									<label className="move_money__label">
+										{translations('CalcBlockYouGive')}
+									</label>
 									<div className="big-sum">
 										{giveSum} {giveCurrency.code}
 									</div>
@@ -217,7 +222,7 @@ const CalculatorStep1 = () => {
 												className="form-check-label"
 												htmlFor="move_money__type_give_payment_1"
 											>
-												To card
+												{translations('CalcBlockToCard')}
 											</label>
 										</div>
 										<div className="form-check">
@@ -235,7 +240,7 @@ const CalculatorStep1 = () => {
 												className="form-check-label"
 												htmlFor="move_money__type_give_payment_2"
 											>
-												To account
+												{translations('CalcBlockToAccount')}
 											</label>
 										</div>
 										<div className="form-check">
@@ -253,7 +258,7 @@ const CalculatorStep1 = () => {
 												className="form-check-label"
 												htmlFor="move_money__type_give_payment_3"
 											>
-												SBP
+												{translations('CalcBlockToSBP')}
 											</label>
 										</div>
 									</div>
@@ -261,7 +266,11 @@ const CalculatorStep1 = () => {
 								{giveCountry && (
 									<div className="calculator__cash">
 										<div className="calculator__country">
-											<span className={'flag flag-' + giveCountry.code.toLowerCase()}></span>
+											<span
+												className={
+													'flag flag-' + giveCountry.code.toLowerCase()
+												}
+											></span>
 											<span>{giveCountry.name}</span>
 										</div>
 										<TextField
@@ -272,7 +281,7 @@ const CalculatorStep1 = () => {
 											}
 											required
 											min={2}
-											placeholder="City"
+											placeholder={translations('CalcBlockCity')}
 											check={validateAll}
 										/>
 										<div className="calculator__transfer">
@@ -291,7 +300,7 @@ const CalculatorStep1 = () => {
 													className="form-check-label"
 													htmlFor="move_money__type_give_delivery_1"
 												>
-													Office
+													{translations('CalcBlockOffice')}
 												</label>
 											</div>
 											<div className="form-check">
@@ -309,7 +318,7 @@ const CalculatorStep1 = () => {
 													className="form-check-label"
 													htmlFor="move_money__type_give_delivery_2"
 												>
-													Courier
+													{translations('CalcBlockCourier')}
 												</label>
 											</div>
 										</div>
@@ -321,7 +330,9 @@ const CalculatorStep1 = () => {
 							</div>
 							<div className="calculator__part calculator__part-right">
 								<div className="calculator__sum">
-									<label className="move_money__label">You get</label>
+									<label className="move_money__label">
+										{translations('CalcBlockYouGet')}
+									</label>
 									<div className="big-sum">
 										{getSum} {getCurrency.code}
 									</div>
@@ -343,7 +354,7 @@ const CalculatorStep1 = () => {
 												className="form-check-label"
 												htmlFor="move_money__type_get_payment_1"
 											>
-												To card
+												{translations('CalcBlockToCard')}
 											</label>
 										</div>
 										<div className="form-check">
@@ -361,7 +372,7 @@ const CalculatorStep1 = () => {
 												className="form-check-label"
 												htmlFor="move_money__type_get_payment_2"
 											>
-												To account
+												{translations('CalcBlockToAccount')}
 											</label>
 										</div>
 										<div className="form-check">
@@ -377,7 +388,7 @@ const CalculatorStep1 = () => {
 												className="form-check-label"
 												htmlFor="move_money__type_get_payment_3"
 											>
-												SBP
+												{translations('CalcBlockToSBP')}
 											</label>
 										</div>
 									</div>
@@ -385,7 +396,9 @@ const CalculatorStep1 = () => {
 								{getCountry && (
 									<div className="calculator__cash">
 										<div className="calculator__country">
-											<span className={'flag flag-' + getCountry.code.toLowerCase()}></span>
+											<span
+												className={'flag flag-' + getCountry.code.toLowerCase()}
+											></span>
 											<span>{getCountry.name}</span>
 										</div>
 										<TextField
@@ -396,7 +409,7 @@ const CalculatorStep1 = () => {
 											}
 											required
 											min={2}
-											placeholder="City"
+											placeholder={translations('CalcBlockCity')}
 											check={validateAll}
 										/>
 										<div className="calculator__transfer">
@@ -415,7 +428,7 @@ const CalculatorStep1 = () => {
 													className="form-check-label"
 													htmlFor="move_money__type_get_delivery_1"
 												>
-													Office
+													{translations('CalcBlockOffice')}
 												</label>
 											</div>
 											<div className="form-check">
@@ -433,7 +446,7 @@ const CalculatorStep1 = () => {
 													className="form-check-label"
 													htmlFor="move_money__type_get_delivery_2"
 												>
-													Courier
+													{translations('CalcBlockCourier')}
 												</label>
 											</div>
 										</div>
@@ -455,7 +468,7 @@ const CalculatorStep1 = () => {
 								onClick={() => handleForwardButton()}
 								disabled={giveCityError || getCityError}
 							>
-								<span>Next</span>
+								<span>{translations('CalcBlockNext')}</span>
 								<ArrowIcon color="#fff" />
 							</button>
 						</div>

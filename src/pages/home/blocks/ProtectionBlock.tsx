@@ -1,14 +1,15 @@
 import { ProtectIcon } from '@components/icons/ProtectIcon'
+import { listTraslations } from '@store/slices/globalsSlice'
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 const ProtectionBlock = () => {
+  const translations = useSelector(listTraslations)
+
 	return (
 		<div className="calculator-block__protection">
 			<ProtectIcon />
-			<p>
-				The service connects the exchangers and the client without transferring
-				money acting as a guarantor of your funds
-			</p>
+			<p>{translations('ProtectionText')}</p>
 		</div>
 	)
 }
